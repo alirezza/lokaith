@@ -1,8 +1,3 @@
-Klar! Hier ist ein Vorschlag für dein `README.md` für das Projekt **Lokaith**:
-
----
-
-```markdown
 # 🕵️‍♂️ Lokaith – Das KI-Detektivspiel
 
 **Lokaith** ist ein interaktives Detektivspiel mit Spracherkennung (STT), Sprachausgabe (TTS) und generativer KI. Du befragst eine zufällig generierte Person – sie hat möglicherweise ein Geheimnis. Finde mit gezielten Fragen heraus, ob sie lügt.
