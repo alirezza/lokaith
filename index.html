@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detective Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'detective': {
+                            bg: '#1a202c', // Dark background
+                            text: '#e2e8f0', // Light text
+                            primary: '#4299e1', // Blue accent
+                            secondary: '#63b3ed',
+                            accent: '#9f7aea', // Purple accent
+                            muted: '#4a5568',
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .dialogue-window {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 1rem;
+            border: 1px solid #4a5568;
+            border-radius: 0.5rem;
+        }
+    </style>
+</head>
+<body class="bg-detective-bg text-detective-text font-sans"></body>
+<link rel="stylesheet" href="styles.css">
+
+    <div class="container mx-auto p-4"></div>
+    <h1 id="scenario-title" class="text-3xl font-bold mb-4"></h1>
+    <p id="scenario-description" class="mb-4"></p>
+
+    <div id="start-view">
+        <h2 class="text-2xl font-semibold mb-2">Select a Suspect</h2>
+        <ul id="suspect-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></ul>
+    </div>
+
+    <div id="interrogation-view" class="hidden">
+        <h2 id="suspect-name" class="text-2xl font-semibold mb-2"></h2>
+        <p id="suspect-info" class="mb-4"></p>
+        <div class="dialogue-window" id="dialogue"></div>
+        <div class="mt-4">
+            <input type="text" id="question-input" placeholder="Ask a question" class="bg-detective-bg text-detective-text border border-detective-muted rounded-md px-2 py-1 w-full mb-2">
+            <div class="flex space-x-2 mb-2">
+              <button onclick="askQuestion()" class="bg-detective-primary hover:bg-detective-secondary text-white font-bold py-2 px-4 rounded">Send Question (Text)</button>
+              <button onclick="askQuestionSpeech()" class="bg-detective-accent hover:bg-purple-400 text-white font-bold py-2 px-4 rounded">Ask Question (Speech)</button>
+            </div>
+            <p id="questions-remaining" class="text-sm text-detective-muted mb-2"></p>
+            <div class="flex space-x-2">
+              <button onclick="changeSuspect()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Change Suspect</button>
+              <button onclick="accuseSuspect()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Accuse</button>
+              <button id="tts-toggle" onclick="toggleTTS()" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">Enable TTS</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="accusation-view" class="hidden">
+        <h2 class="text-2xl font-semibold mb-2">Accuse a Suspect</h2>
+        <ul id="accusation-list" class="space-y-2"></ul>
+        <button onclick="submitAccusation()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">Accuse This Suspect</button>
+    </div>
+
+    <div id="result-view" class="hidden">
+        <h2 id="result-heading" class="text-2xl font-semibold mb-2"></h2>
+        <p id="result-message" class="mb-4"></p>
+        <button onclick="newGame()" class="bg-detective-primary hover:bg-detective-secondary text-white font-bold py-2 px-4 rounded">New Game</button>
+    </div>
+
+    <div id="loading" class="hidden">Loading...</div>
+    <div id="error" class="text-red-500 mt-4 hidden"></div>
+
+</html>
+<script src="script.js"></script>
+```
+
+**Key Improvements and Considerations:**
+
+*   **Error Handling:**  Added a general `fetchData` function for consistent API calls with error handling (network issues, bad responses) and visual feedback to the user.
+*   **Loading Indicator:** Shows "Loading..." during API requests.
+*   **Clearer UI States:** The view switching (start, interrogation, accusation, result) is managed with CSS classes (`hidden`) for better readability.
+*   **Conversation History:** Improved the dialogue display with different styling for "You," "Suspect," and game messages.  Auto-scrolls to the bottom.
+*   **Remaining Questions:** The number of remaining questions is now displayed and updated.
+*   **Speech Recognition:** The "Ask Question (Speech)" button now utilizes the Web Speech API, and handles errors gracefully. If Speech Recognition is not supported by the browser, a message is logged to the console (you might want to disable the button or display a message to the user in a production app).
+*   **Speech Output (TTS):** The `speak()` function uses the Web Speech API for text-to-speech. A toggle button enables/disables TTS.
+*   **Accusation Phase:** The accusation view now properly presents the suspects as radio buttons.
+*   **Result Phase:** Displays the accusation result and a "New Game" button.
+*   **Backend Assumptions:** The code assumes the backend endpoints behave as described in your requirements.  You'll need to adapt the URLs and data handling if the backend is different.
+*   **Styling:** The Tailwind CSS is set up for a dark theme with detective-style colors, and the Inter font.
+*   **Responsiveness:** The grid layout for the suspect list should adapt to different screen sizes.
+*   **Question Limit:** Added logic to reflect the remaining questions and a message when the limit is reached.
+*   **Suspect Name in Dialogue:**  The suspect's name is now prepended to their answers in the dialogue.
+
+**Before Running:**
+
+1.  **Backend:** You *must* have a backend (e.g., using Python and Firebase Cloud Functions) running and accessible at the specified endpoints (`/scenario`, `/suspect/{id}/info`, `/ask`, `/accuse`).  This frontend code won't work without a functional backend.
+2.  **Adapt for your Backend:**  If your actual backend has different endpoint paths or data structures, you'll need to modify the `fetchData` calls and the data handling in the JavaScript code.
+3.  **Deployment:** To deploy this, you can simply save the HTML as an `index.html` file and host it on any static web server (e.g., Netlify, Vercel, GitHub Pages).  Make sure your backend is also deployed and its URL is correctly configured in your frontend's JavaScript.
+
+**To run locally for testing (without a backend):**
+
+1.  Save the code as `index.html`.
+2.  Open `index.html` in a web browser.
+3.  You'll see the UI, but interactions requiring backend calls (loading scenario, interrogations, etc.) will result in error messages because the backend isn't there.  You can temporarily mock backend responses in the JavaScript for testing purposes if needed (see "Mocking Data" below).
+
+**Mocking Data (for local testing without a backend):**
+
+To get a basic idea of how the frontend looks and behaves without a backend, you can temporarily modify the `fetchData` function to return mock data:
+
+```javascript
+async function fetchData(url, options = {}) {
+    loadingIndicator.classList.remove('hidden');
+    errorDisplay.classList.add('hidden');
+
+    try {
+        // --- MOCK DATA ---  (Remove this for real backend)
+        if (url === '/scenario') {
+            return {
+                title: "The Case of the Missing Manuscript",
+                description: "A valuable manuscript has been stolen! Question the suspects to find the culprit.",
+                suspects: [
+                    { id: "1", name: "Professor Plum", job: "Historian" },
+                    { id: "2", name: "Miss Scarlett", job: "Socialite" },
+                    { id: "3", name: "Colonel Mustard", job: "Retired Military Officer" },
+                ],
+            };
+        } else if (url.startsWith('/suspect/')) {
+            const suspectId = url.split('/')[2].split('/')[0];  // Extract ID
+            return {
+                name: `Suspect ${suspectId}`,
+                background: "Mock background information.",
+                alibi: "Mock alibi.",
+                questions_remaining: 2,
+            };
+        } else if (url === '/ask') {
+            return {
+                answer: "Mock answer to the question.",
+                questions_remaining: 1,
+            };
+        } else if (url === '/accuse') {
+            const accusedId = JSON.parse(options.body).suspect_id;
+            return {
+                correct: accusedId === "2",  // For testing, assume Miss Scarlett is correct
+                message: accusedId === "2" ? "You caught her!" : "Incorrect! The culprit was actually Miss Scarlett.",
+            };
+        }
+        // --- END MOCK DATA ---
+
+        // Comment out the above "MOCK DATA" section when you have a real backend!
+
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (e) {
+        errorDisplay.textContent = `Error: ${e.message}`;
+        errorDisplay.classList.remove('hidden');
+        return null;
+    } finally {
+        loadingIndicator.classList.add('hidden');
+    }
+}
