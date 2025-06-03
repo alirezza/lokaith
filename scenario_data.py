@@ -56,6 +56,12 @@ class Scenario:
          """ Gibt eine Liste von Dicts für die Frontend-Anzeige zurück. """
          return [{"id": s.id, "name": s.name, "job": s.job} for s in self.suspects.values()]
 
+    def list_suspects(self):
+        """Gibt die verfügbaren Verdächtigen mit ihren IDs auf der Konsole aus."""
+        print("\n-- Verf\xC3\xBCgbare Verd\xC3\xA4chtige --")
+        for s in self.suspects.values():
+            print(f"[{s.id}] {s.get_profile_summary()}")
+
     def get_suspect(self, s_id):
         """ Gibt das Objekt des Verdächtigen anhand der ID zurück (Großbuchstaben). """
         return self.suspects.get(s_id.upper())
