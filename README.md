@@ -43,6 +43,14 @@ pip install -r requirements.txt
 PERPLEXITY_API_KEY=dein_api_key
 ```
 
+### Tests ausführen
+
+Nach dem Einrichten der Umgebung kannst du die automatischen Tests mit
+
+```bash
+pytest
+```
+
 ---
 
 ## ▶️ Spiel starten
