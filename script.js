@@ -32,7 +32,7 @@ async function fetchData(endpoint, options = {}) {
     if (!loadingIndicator) return null; 
     loadingIndicator.classList.remove('hidden');
     if (errorDisplay) errorDisplay.classList.add('hidden'); 
-    console.log(`Workspaceing: ${BASE_URL}${endpoint}`, options); 
+    console.log(`Fetching: ${BASE_URL}${endpoint}`, options); 
 
     try {
         const response = await fetch(`${BASE_URL}${endpoint}`, options);
