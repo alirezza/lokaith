@@ -12,7 +12,8 @@ from voice_interface import speak, get_user_input, get_user_accusation_input
 # Importiere die initialisierten Objekte direkt, wenn sie global in voice_interface sind
 # oder initialisiere sie hier, falls sie nicht global sind.
 # Annahme: stt_model und tts_engine sind in voice_interface initialisiert und importierbar
-from voice_interface import stt_model, tts_engine 
+from voice_interface import stt_model, tts_engine
+from minigames import play_random_minigame
 
 # --- Angepasste Hybrid-Antwort Funktion ---
 def get_answer(suspect, question, conversation_history):
@@ -109,15 +110,24 @@ if __name__ == "__main__":
             speak(f"Noch {remaining_q_suspect} Fragen für {current_suspect.name}.")
 
             # *** NEU: get_user_input nutzen, das 'wechseln'/'raten' erkennt ***
-            user_input_raw = get_user_input("Deine Frage (oder 'wechseln'/'raten')")
+            user_input_raw = get_user_input("Deine Frage (oder 'wechseln'/'raten'/'minigame')")
             
             # Befehle zuerst prüfen
-            if user_input_raw.lower() == 'wechseln':
+            cmd = user_input_raw.lower()
+            if cmd == 'wechseln':
                  print("Wechsle Verdächtigen..."); speak("Wechsle Verdächtigen.")
-                 break # Beende innere Schleife, gehe zur äußeren
-            if user_input_raw.lower() == 'raten':
-                 suspect_choice_id = 'ENDE' # Signal zum Beenden der äußeren Schleife
-                 break # Beende innere Schleife
+                 break
+            if cmd == 'raten':
+                 suspect_choice_id = 'ENDE'
+                 break
+            if cmd == 'minigame' or cmd == 'spiel':
+                 won = play_random_minigame()
+                 if won:
+                     hint = current_scenario.get_bonus_hint()
+                     if hint:
+                         print(f"[Hinweis] {hint}")
+                         speak(hint)
+                 continue
 
             question = user_input_raw # Es ist eine Frage
             if not question: continue

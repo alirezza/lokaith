@@ -43,14 +43,23 @@ class Suspect:
 
 class Scenario:
     """ Repräsentiert ein Ermittlungs-Szenario (mit mehr Details). """
-    def __init__(self, id, title, description, scene_details, suspects):
-        self.id = id; self.title = title; 
-        self.description = description # Hauptbeschreibung des Falls
+    def __init__(self, id, title, description, scene_details, suspects, bonus_clues=None):
+        self.id = id
+        self.title = title
+        self.description = description  # Hauptbeschreibung des Falls
         # NEU: Details zum Schauplatz
-        self.scene_details = scene_details 
-        self.suspects = {s.id.upper(): s for s in suspects} 
-        self.culprit_id = next((s.id for s in suspects if s.is_culprit), None) 
-        if not self.culprit_id: print(f"WARNUNG: Szenario '{title}' hat keinen Täter!")
+        self.scene_details = scene_details
+        self.suspects = {s.id.upper(): s for s in suspects}
+        self.culprit_id = next((s.id for s in suspects if s.is_culprit), None)
+        if not self.culprit_id:
+            print(f"WARNUNG: Szenario '{title}' hat keinen Täter!")
+        self.bonus_clues = bonus_clues or []
+
+    def get_bonus_hint(self):
+        """Gibt einen zufälligen Bonus-Hinweis zurück, falls verfügbar."""
+        if not self.bonus_clues:
+            return None
+        return random.choice(self.bonus_clues)
              
     def list_suspects_for_display(self):
          """ Gibt eine Liste von Dicts für die Frontend-Anzeige zurück. """
@@ -137,12 +146,18 @@ def load_scenario(scenario_id):
         )
         
         scenario_info = next((s for s in available_scenarios_list if s["id"] == "SPIONAGE01"), None)
+        bonus_clues = [
+            "Auf einem Notizzettel steht der Name 'Apex' geschrieben.",
+            "Jemand hat kurz nach 20 Uhr hektisch das Gebäude verlassen.",
+            "Im Marketingbüro riecht es nach teurem Parfüm.",
+        ]
         return Scenario(
-            id="SPIONAGE01", title=scenario_info['title'], 
-            description=scenario_info['description'], 
-            # NEU: Details zum Schauplatz
+            id="SPIONAGE01",
+            title=scenario_info['title'],
+            description=scenario_info['description'],
             scene_details="Die Büros von TechCorp sind modern, aber gestern Abend wirkten die Flure verlassen. Im Marketingbereich wurde eine offen gelassene Schublade gefunden.",
-            suspects=[suspect1, suspect2, suspect3]
+            suspects=[suspect1, suspect2, suspect3],
+            bonus_clues=bonus_clues,
         )
         
     # === Szenario 2: Mordfall (Müsste ebenso angereichert werden) ===
