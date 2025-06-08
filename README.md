@@ -12,6 +12,14 @@
 - 🔊 TTS-Ausgabe mit Stimme (wenn verfügbar)
 - 🧠 Zufällige Geheimnisse & Reaktionsmuster
 - 📈 Steigende Spannung durch **Verdachts-Indikator**
+- 🔐 Kleines Minispiel "Codebreaker" zum Freischalten zusätzlicher Hinweise
+- 🕵️‍♀️ Minispiel "Spurenanalyse" zum Zuordnen von Hinweisen
+- 🎴 Gedächtnisspiel "Aussagen merken" für bessere Beobachtung
+- 💬 Minispiel "Lügendetektor" zum Aufdecken von Stressmustern
+- 🧩 Minispiel "Indizien-Puzzle" zum Zusammensetzen von Fotos
+- 📂 Minispiel "Beweismittelkette" zum zeitlichen Zuordnen von Beweisen
+- Neu: Während der Befragung kannst du mit dem Befehl `minigame` ein zufälliges
+  Minispiel starten, um einen zusätzlichen Hinweis zu erhalten.
 
 ---
 
