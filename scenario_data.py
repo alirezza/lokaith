@@ -3,8 +3,25 @@ import random
 
 # --- Datenstrukturen ---
 class Suspect:
-    """ Repräsentiert eine verdächtige Person im Spiel (mit mehr Details). """
-    def __init__(self, id, name, age, job, appearance, personality, background, alibi, is_culprit=False, secret_type=None, secret_details=None, keywords=None, known_facts=None):
+    """Repräsentiert eine verdächtige Person im Spiel (mit mehr Details)."""
+
+    def __init__(
+        self,
+        id,
+        name,
+        age,
+        job,
+        appearance,
+        personality,
+        background,
+        alibi,
+        is_culprit=False,
+        secret_type=None,
+        secret_details=None,
+        keywords=None,
+        known_facts=None,
+        bonus_clues=None,
+    ):
         self.id = id 
         self.name = name; self.age = age; self.job = job
         # NEU: Detailliertere Beschreibung
@@ -15,7 +32,8 @@ class Suspect:
         self.is_culprit = is_culprit 
         self.secret_type = secret_type 
         self.secret_details = secret_details 
-        self.keywords = keywords if keywords else [] 
+        self.keywords = keywords if keywords else []
+        self.bonus_clues = bonus_clues or []
         # Erweitertes known_facts für direkte Antworten
         self.known_facts = known_facts if known_facts else {} 
         # Füge Standard-Fakten hinzu, die aus anderen Feldern abgeleitet werden
@@ -24,6 +42,13 @@ class Suspect:
         self.known_facts.setdefault("job", self.job)
         self.known_facts.setdefault("alibi", self.alibi)
         self.known_facts.setdefault("aussehen", self.appearance)
+
+
+    def get_bonus_hint(self):
+        """Gibt einen zufälligen Hinweis dieses Verdächtigen zurück."""
+        if not self.bonus_clues:
+            return None
+        return random.choice(self.bonus_clues)
 
 
     def get_profile_summary(self):
@@ -55,8 +80,14 @@ class Scenario:
             print(f"WARNUNG: Szenario '{title}' hat keinen Täter!")
         self.bonus_clues = bonus_clues or []
 
-    def get_bonus_hint(self):
-        """Gibt einen zufälligen Bonus-Hinweis zurück, falls verfügbar."""
+    def get_bonus_hint(self, suspect_id=None):
+        """Gibt einen zufälligen Bonus-Hinweis zurück."""
+        if suspect_id:
+            suspect = self.get_suspect(suspect_id)
+            if suspect:
+                hint = suspect.get_bonus_hint()
+                if hint:
+                    return hint
         if not self.bonus_clues:
             return None
         return random.choice(self.bonus_clues)
@@ -108,7 +139,11 @@ def load_scenario(scenario_id):
                 "projekt": "Projekt Phoenix, eine wichtige neue Software-Komponente.",
                 "finanzielle_situation": "Äh... darüber möchte ich nicht sprechen. Es ist alles in Ordnung.", # Beispiel für ausweichende, aber feste Antwort
                 "kollegen_gesehen": "Ja, Herr Müller aus dem Nachbarbüro war bis etwa halb acht noch da."
-                }
+                },
+            bonus_clues=[
+                "Auf seinem Schreibtisch liegen viele unbezahlte Rechnungen.",
+                "Ein Kollege hörte ihn kürzlich über Geldprobleme reden."
+            ]
         )
         suspect2 = Suspect(
             id="B", name="Sandra Meier", age=35, job="Marketing Managerin",
@@ -120,12 +155,16 @@ def load_scenario(scenario_id):
             secret_details="Du verkaufst seit Monaten regelmäßig Kundendaten und Marketingstrategien an einen Konkurrenten (Apex Solutions), um deine Karriere voranzutreiben und dir einen luxuriösen Lebensstil zu finanzieren. Das Geschäftsessen war nur ein Vorwand; du hast dich kurz mit deinem Kontakt von Apex getroffen, um die neuesten Daten zu übergeben.",
             keywords=["marketing", "kunden", "daten", "strategie", "konkurrenz", "apex", "geschäftsessen", "karriere", "geld", "vertraulich", "neue", "ehrgeizig", "restaurant", "la lune"],
              known_facts={
-                 "anwesenheit_büro_tatzeit": "Nein, ich war bei einem wichtigen Geschäftsessen im 'La Lune'.", 
+                 "anwesenheit_büro_tatzeit": "Nein, ich war bei einem wichtigen Geschäftsessen im 'La Lune'.",
                  "job_bezeichnung": "Marketing Managerin bei TechCorp.",
                  "firma": "TechCorp",
                  "kunde_name": "Das ist im Moment noch vertraulich, es geht um einen großen potenziellen Deal.", # Ausweichende Antwort
                  "restaurant": "Im 'La Lune', ein sehr gutes Restaurant."
-                 }
+                 },
+            bonus_clues=[
+                "Im Papierkorb liegt eine Visitenkarte von 'Apex Solutions'.",
+                "Sie wurde kürzlich beim Kauf teurer Geschenke gesehen."
+            ]
         )
         suspect3 = Suspect(
             id="C", name="Klaus Huber", age=58, job="Hausmeister",
@@ -137,12 +176,16 @@ def load_scenario(scenario_id):
             secret_details="Du nimmst öfter mal Büromaterial (Stifte, Blöcke) und vor allem den guten Kaffee aus der Chefetage für zuhause mit. Es ist nicht viel, aber du hast Angst, dass es mal auffällt und du Ärger bekommst.",
             keywords=["reinigung", "gebäude", "unterwegs", "gesehen", "allein", "material", "kaffee", "mitgenommen", "hausmeister", "zugang", "runde", "schlüssel"],
             known_facts={
-                "anwesenheit_büro_tatzeit": "Nein, nicht fest in einem Büro, ich habe meine Runde gemacht.", 
+                "anwesenheit_büro_tatzeit": "Nein, nicht fest in einem Büro, ich habe meine Runde gemacht.",
                 "job_bezeichnung": "Ich bin hier der Hausmeister.",
                 "firma": "TechCorp",
                 "runde_details": "Ich war überall mal, im 3. Stock bei der Entwicklung, im 2. beim Marketing... wie jeden Abend.",
                 "etwas_gesehen": "Nein, eigentlich war alles ruhig. Nur Herr Schmidt war noch da oben."
-                }
+                },
+            bonus_clues=[
+                "Er besitzt einen Generalschlüssel für fast alle Räume.",
+                "Er erinnert sich an jedes Geräusch im Gebäude."
+            ]
         )
         
         scenario_info = next((s for s in available_scenarios_list if s["id"] == "SPIONAGE01"), None)
