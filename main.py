@@ -123,7 +123,7 @@ if __name__ == "__main__":
             if cmd == 'minigame' or cmd == 'spiel':
                  won = play_random_minigame()
                  if won:
-                     hint = current_scenario.get_bonus_hint()
+                     hint = current_scenario.get_bonus_hint(current_suspect.id)
                      if hint:
                          print(f"[Hinweis] {hint}")
                          speak(hint)

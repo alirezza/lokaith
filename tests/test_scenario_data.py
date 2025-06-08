@@ -25,3 +25,15 @@ def test_get_suspect_case_insensitive():
 def test_get_suspect_invalid():
     scenario = load_scenario("SPIONAGE01")
     assert scenario.get_suspect("Z") is None
+
+
+def test_get_bonus_hint_for_suspect():
+    scenario = load_scenario("SPIONAGE01")
+    hint = scenario.get_bonus_hint("A")
+    assert hint in scenario.get_suspect("A").bonus_clues
+
+
+def test_get_bonus_hint_default():
+    scenario = load_scenario("SPIONAGE01")
+    hint = scenario.get_bonus_hint()
+    assert hint in scenario.bonus_clues
