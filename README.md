@@ -107,7 +107,38 @@ python -m http.server
 
 ---
 
--## 📦 Anforderungen
+## 🐳 Docker nutzen
+
+Neben der Ausführung auf dem Host kannst du das Projekt auch in Containern
+starten. Es gibt zwei Varianten:
+
+1. **Dev Docker** – bindet deinen Quellcode als Volume ein und eignet sich
+   für schnelle lokale Anpassungen.
+
+```bash
+docker compose -f docker-compose.dev.yml up --build
+```
+
+2. **Prod Docker** – ohne Volume. Diese Variante wird z.B. in GitLab CI/CD
+   verwendet.
+
+```bash
+docker compose -f docker-compose.prod.yml up --build
+```
+
+Beide Konfigurationen lesen deine `.env` Datei und stellen das Backend unter
+<http://localhost:8004> bereit.
+
+---
+
+## 🤖 GitHub Actions
+
+Bei jedem Push laufen die Tests automatisch. Die Konfiguration findest du in
+`.github/workflows/ci.yml`.
+
+---
+
+## 📦 Anforderungen
 
 - Python 3.8 bis 3.11\*
 - Internetverbindung für API-Zugriffe

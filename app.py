@@ -1,7 +1,8 @@
 # app.py
 from flask import Flask, jsonify, request
-from flask_cors import CORS 
-import random # Für Herzschlag-Zufall
+from flask_cors import CORS
+import random  # Für Herzschlag-Zufall
+import os
 
 # Importiere Logik aus unseren anderen Modulen
 from scenario_data import load_scenario, get_available_scenarios, Suspect
@@ -226,7 +227,8 @@ def accuse_suspect_endpoint():
 
 # --- App starten ---
 if __name__ == '__main__':
-    check_config() 
-    print("Starte Flask Backend Server auf http://localhost:5000 ...")
-    app.run(host='0.0.0.0', port=8004, debug=True) # host='0.0.0.0' kann wichtig sein
+    check_config()
+    debug_mode = os.getenv("ENV_MODE", "dev") != "prod"
+    print("Starte Flask Backend Server auf http://localhost:8004 ...")
+    app.run(host='0.0.0.0', port=8004, debug=debug_mode)  # host='0.0.0.0' kann wichtig sein
 

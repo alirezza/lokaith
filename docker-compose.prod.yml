@@ -1,0 +1,10 @@
+version: '3.9'
+services:
+  lokaith:
+    build: .
+    env_file: .env
+    environment:
+      - ENV_MODE=prod
+    ports:
+      - "8004:8004"
+    command: python app.py
