@@ -78,6 +78,35 @@ python main.py
 
 ---
 
+## ✨ Web-Frontend nutzen
+
+Zusätzlich zum Konsolenspiel gibt es eine Flask-API (`app.py`) und ein kleines
+Web-Frontend (`index.html`, `script.js`, `styles.css`). So startest du die Web-
+Variante:
+
+1. **Backend starten**
+
+```bash
+python app.py
+```
+
+   Der Server läuft standardmäßig auf <http://localhost:8004>.
+
+2. **Frontend aufrufen**
+
+   Öffne `index.html` direkt im Browser oder starte einen einfachen HTTP-Server
+   und rufe die Seite dann auf:
+
+```bash
+python -m http.server
+```
+
+   Die Datei erreichst du anschließend unter
+   <http://localhost:8000/index.html>. Achte darauf, dass in `script.js` die
+   Konstante `BASE_URL` auf die Adresse deines Backends zeigt.
+
+---
+
 -## 📦 Anforderungen
 
 - Python 3.8 bis 3.11\*
