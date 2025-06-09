@@ -69,12 +69,16 @@ python main.py
 
 ---
 
-## 📦 Anforderungen
+-## 📦 Anforderungen
 
-- Python 3.9 oder neuer
+- Python 3.8 bis 3.11\*
 - Internetverbindung für API-Zugriffe
 - Mikrofon (für Spracheingabe)
 - Lautsprecher (für Sprachausgabe)
+
+\* Das Python-Paket `openai-whisper` unterstützt derzeit keine Python-Versionen
+ab 3.12. Verwende daher eine Umgebung mit Python 3.11 oder älter, damit die
+Installation mit `pip install -r requirements.txt` funktioniert.
 
 ---
 
