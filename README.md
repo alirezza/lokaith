@@ -49,7 +49,12 @@ pip install -r requirements.txt
 
 ```env
 PERPLEXITY_API_KEY=dein_api_key
+PERPLEXITY_MODEL=sonar-small-chat
 ```
+
+> `config.py` erwartet die Umgebungsvariable `PERPLEXITY_MODEL`,
+> die angibt, welches Perplexity-Modell genutzt wird (z.B.
+> `sonar-small-chat`).
 
 ### Tests ausführen
 
