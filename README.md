@@ -6,7 +6,7 @@
 
 ## 🔍 Features
 
-- 🎭 Dynamische Charaktere durch echte API-Daten
+- 🎭 API-Vorbereitung für dynamische Charaktere (noch nicht aktiv)
 - 🤖 KI-gesteuerte Antworten via Perplexity AI (sonar)
 - 🗣️ Sprachsteuerung: Frage per Mikrofon
 - 🔊 TTS-Ausgabe mit Stimme (wenn verfügbar)
@@ -22,6 +22,10 @@
   Minispiel starten, um einen zusätzlichen Hinweis zu erhalten.
 
 ---
+
+## 🗺️ Szenarien-Status
+
+Derzeit ist nur das Szenario **SPIONAGE01** voll spielbar. Die übrigen Szenarien sind noch unvollständig und dienen als Platzhalter.
 
 ## ⚙️ Setup
 
